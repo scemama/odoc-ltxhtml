@@ -30,14 +30,14 @@ type t
  *)
 val create : string -> t
 
-(** [generate g ~latex ~header ~footer ~dvigif ~fg ~bg ~resolution code]
+(** [generate g ~latex ~header ~footer ~dvipng ~fg ~bg ~resolution code]
     compiles LaTeX code and generates a LaTeX image.
     @return the file name of the generated LaTeX image.
     @param g a LaTeX image generator.
     @param latex LaTeX command.
     @param header the header of a LaTeX file.
     @param footer the footer of a LaTeX file.
-    @param dvigif dvigif command.
+    @param dvipng dvipng command.
     @param fg Foreground color.
     @param bg Background color.
     @param resolution the resolution of the LaTeX image.
@@ -45,7 +45,7 @@ val create : string -> t
  *)
 val generate : t ->
                latex:string -> header:string -> footer:string ->
-               dvigif:string -> fg:string -> bg:string -> resolution:int ->
+               dvipng:string -> fg:string -> bg:string -> resolution:int ->
                string -> string
 
 (** [cleanup g] removes unused LaTeX images and a temporary directory.

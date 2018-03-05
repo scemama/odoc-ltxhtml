@@ -88,21 +88,21 @@ let run_latex ~latex ~header ~footer dir filename code =
                     (Filename.quote (filename ^ ".tex")) in
   ignore (run_cmd cmd)
 
-(** Execute `dvigif' command *)
-let run_dvigif ~dvigif ~fg ~bg ~resolution dir filename =
+(** Execute `dvipng' command *)
+let run_dvipng ~dvipng ~fg ~bg ~resolution dir filename =
   let pathname = Filename.concat dir filename in
   let cmd = sprintf "%s -D %d -T tight -fg '%s' -bg '%s' -o %s %s"
-                    dvigif resolution
+                    dvipng resolution
                     (String.escaped fg) (String.escaped bg)
-                    (Filename.quote (pathname ^ ".gif"))
+                    (Filename.quote (pathname ^ ".png"))
                     (Filename.quote (pathname ^ ".dvi")) in
   ignore (run_cmd cmd)
 
 let generate {digest_tbl; image_dir; tmp_dir}
-             ~latex ~header ~footer ~dvigif ~fg ~bg ~resolution code =
+             ~latex ~header ~footer ~dvipng ~fg ~bg ~resolution code =
   let digest = Digest.string code in
   let filename = Digest.to_hex digest in
-  let img_path = (Filename.concat image_dir filename) ^ ".gif" in
+  let img_path = (Filename.concat image_dir filename) ^ ".png" in
   if Hashtbl.mem digest_tbl digest
   then
     verbosef "LaTeX image %s exists, we don't generate it." img_path ()
@@ -110,11 +110,11 @@ let generate {digest_tbl; image_dir; tmp_dir}
     begin
       verbosef "Generate LaTeX image %s..." img_path ();
       run_latex ~latex ~header ~footer tmp_dir filename code;
-      run_dvigif ~dvigif ~fg ~bg ~resolution tmp_dir filename;
-      Unix.rename ((Filename.concat tmp_dir filename) ^ ".gif") img_path
+      run_dvipng ~dvipng ~fg ~bg ~resolution tmp_dir filename;
+      Unix.rename ((Filename.concat tmp_dir filename) ^ ".png") img_path
     end;
   Hashtbl.replace digest_tbl digest true;
-  filename ^ ".gif"
+  filename ^ ".png"
 
 let cleanup {digest_tbl; image_dir; tmp_dir} =
   ignore (Unix.system ("rm -rf " ^ tmp_dir));
@@ -122,7 +122,7 @@ let cleanup {digest_tbl; image_dir; tmp_dir} =
     if not is_used
     then
       let hex = Digest.to_hex digest in
-      let filename = (Filename.concat image_dir hex) ^ ".gif" in
+      let filename = (Filename.concat image_dir hex) ^ ".png" in
       verbose ("LaTeX image " ^ filename ^ " is unused, we remove it.");
       Unix.unlink filename
   in

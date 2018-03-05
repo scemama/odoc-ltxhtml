@@ -27,7 +27,7 @@ open Odoc_info
 module Opt =
   struct
     let latex = ref "latex"
-    let dvigif = ref "dvigif"
+    let dvipng = ref "dvipng"
     let dir = ref "ltx"
     let resolution = ref 110
     let fg = ref "rgb 0.0 0.0 0.0"
@@ -46,8 +46,8 @@ module Opt =
     let () = [
       "-ltxhtml-latex", Arg.Set_string latex,
       sprintf "<cmd>\tSpecify the LaTeX command (default = %s)" !latex;
-      "-ltxhtml-dvigif", Arg.Set_string dvigif,
-      sprintf "<cmd>\tSpecify the dvigif command (default = %s)" !dvigif;
+      "-ltxhtml-dvipng", Arg.Set_string dvipng,
+      sprintf "<cmd>\tSpecify the dvipng command (default = %s)" !dvipng;
       "-ltxhtml-dir", Arg.Set_string dir,
       sprintf "<dir>\tGenerate image files in directory <dir> (default = %s)"
               !dir;
@@ -103,7 +103,7 @@ module Ltxhtml_generator (G: Odoc_html.Html_generator)
                                                  ~latex:!Opt.latex
                                                  ~header:!Opt.header
                                                  ~footer:!Opt.footer
-                                                 ~dvigif:!Opt.dvigif
+                                                 ~dvipng:!Opt.dvipng
                                                  ~fg:!Opt.fg ~bg:!Opt.bg
                                                  ~resolution:!Opt.resolution
                                                  code in
