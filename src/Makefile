@@ -13,4 +13,4 @@ clean:
 	rm -rf *.cmi *.cmo *.cma
 
 install: all
-	cp ltxhtml.cma ltxhtml.cmxs $(ocamldoc -customdir)
+	cp ltxhtml.cma ltxhtml.cmxs $$(ocamldoc -customdir)

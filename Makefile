@@ -9,3 +9,6 @@ example: all
 clean:
 	make clean -C src
 	make clean -C example
+
+install:
+	make install -C src 

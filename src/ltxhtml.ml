@@ -26,10 +26,12 @@ open Odoc_info
 
 module Opt =
   struct
-    let latex = ref "latex"
+    let latex = ref  (try (Sys.getenv "ODOC_LTXHTML_LATEX") with 
+                      Not_found -> "latex")
     let dvipng = ref "dvipng"
-    let dir = ref "ltx"
-    let resolution = ref 110
+    let dir = ref (try (Sys.getenv "ODOC_LTXHTML_DIR") with 
+                   Not_found -> "ltx")
+    let resolution = ref 120
     let fg = ref "rgb 0.0 0.0 0.0"
     let bg = ref "rgb 1.0 1.0 1.0"
     let header = ref "\\documentclass{article}\n\
