@@ -111,13 +111,14 @@ let generate {digest_tbl; image_dir; tmp_dir}
       verbosef "Generate LaTeX image %s..." img_path ();
       run_latex ~latex ~header ~footer tmp_dir filename code;
       run_dvipng ~dvipng ~fg ~bg ~resolution tmp_dir filename;
-      Unix.rename ((Filename.concat tmp_dir filename) ^ ".png") img_path
+      ignore (Unix.system ("cp -- " ^ ((Filename.concat tmp_dir filename) ^ ".png ") ^ img_path));
+      ignore (Unix.system ("rm -- " ^ ((Filename.concat tmp_dir filename) ^ ".png") ));
     end;
   Hashtbl.replace digest_tbl digest true;
   filename ^ ".png"
 
 let cleanup {digest_tbl; image_dir; tmp_dir} =
-  ignore (Unix.system ("rm -rf " ^ tmp_dir));
+  ignore (Unix.system ("rm -rf -- " ^ tmp_dir));
   let remove_if_unused digest is_used =
     if not is_used
     then
