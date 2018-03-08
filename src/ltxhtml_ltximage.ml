@@ -125,6 +125,7 @@ let cleanup {digest_tbl; image_dir; tmp_dir} =
       let hex = Digest.to_hex digest in
       let filename = (Filename.concat image_dir hex) ^ ".png" in
       verbose ("LaTeX image " ^ filename ^ " is unused, we remove it.");
-      Unix.unlink filename
+      try Unix.unlink filename
+      with Unix.Unix_error(Unix.ENOENT, "unlink", _) -> ()
   in
   Hashtbl.iter remove_if_unused digest_tbl
